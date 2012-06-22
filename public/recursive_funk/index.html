@@ -1,0 +1,40 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>sound: off</title>
+	</head>
+	<body>
+		<p>JavaScript's Recursive Funk: <button id="start">start</button><button id="stop">stop</button></p>
+	</body>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script type="text/javascript" src="js/timbre.min.js"></script>
+	<script type="text/javascript" src="js/drumkit.js"></script>
+	<script type="text/javascript" src="js/bass.js"></script>
+	<script type="text/javascript" src="js/osx.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</html>
+
+<!--
+
+Javascriptで再帰ファンク
+	 
+impromptuとかovertoneだと 起動したときに絶対的なクロック(ドンカマ)があって それを引数にとるといくら再帰関数をつくってあげても
+それぞれの再帰関数は ちゃんと協調するようになっている
+
+なぜ複数の再帰関数をつかいたいのかというと 音程・長さをもつリストを引数にとった関数を再帰させる方法だと リストを書きかえ可能なスコープに置くことで
+リアルタイムな変更ができるから ブラウザであればwebコンソールからリストを書きかえればそんなことができますよね
+	 
+けどweb audio apiだと発音するオブジェクトごとにタイマーをもっているので 基本的に異なるオブジェクトが時間的な協調はできないぽい
+(じぶんが知らないだけかもしれないけど)
+
+それに まえに強引にためしたらトリプレット(3連符)なんかをつかうと見事にズレていくので どーしたもんかなとおもってた次第
+
+なのでメインのループ(これはBPMに対する4分でinterval実行される)をおいてあげて このなかで1拍のなかの譜割を再帰させて処理するようにした
+1拍ごとなので↑みたいにトリプレットをつかった場合でもズレることはまったくない
+
+てなかんじで オーディオまわりはいつものごとくtimbreをつかってるんだけども 発音処理なんかはすべて再帰処理でやってます
+
+それと main.jsに定義されてるfnていう関数がinterval実行されるので 動的に書きかえてブラウザ側で評価できればライヴコーディングできそうな気がする
+ライヴな雰囲気を味わうにはさしあたりBass.cutoff, Bass.Q, Bass.depthあたりをwebコンソールでいじるといいかもしれないです
+	 
+-->
