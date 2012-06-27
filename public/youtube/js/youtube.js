@@ -86,3 +86,8 @@ function onPlayerStateChange(ev){
   }
 };
 
+$(function(){
+  $.getScript("http://www.youtube.com/player_api",function(){
+    
+  });
+});
