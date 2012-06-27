@@ -58,29 +58,26 @@ function onYouTubePlayerAPIReady(){
   });
 };
 
+metro.add('yt',function(i){
+  var c4 = i.count%4;
+
+  if(c4===0){
+    if(i.count>12){
+      if(Math.random()>0.3){
+        Snare.loop();
+        Boom.loop();
+        VIDEO.loop();
+      }
+    }
+    if(i.count>80){
+      VIDEO.seq_change();
+    }
+  }
+});
+
 function onPlayerReady(ev){
   yt.playVideo();
-
-  metro.add('yt',function(i){
-    var c4 = i.count%4;
-
-    if(c4===0){
-      if(i.count>12){
-        if(Math.random()>0.3){
-          Snare.loop();
-          Boom.loop();
-          VIDEO.loop();
-        }
-      }
-
-      if(i.count>80){
-        VIDEO.seq_change();
-      }
-
-    }
-  });
   metro.run();
-
 };
 
 function onPlayerStateChange(ev){
