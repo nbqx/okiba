@@ -6,20 +6,18 @@ Basis = {
       bpm = bpm || metro.bpm;
       seq = this[name] || [];
       fn = function(list){
-        var x, xs, cur, rest, dur, tmr;
+        var x, xs, dur, tmr;
         x = list[0], xs = __slice.call(list, 1);
-        cur = x;
-        rest = xs;
-        dur = cur[0] instanceof Array
-          ? dur = timbre.utils.bpm2msec(bpm, cur[0][0]) * cur[0][1]
-          : dur = timbre.utils.bpm2msec(bpm, cur[0]);
+        dur = x[0] instanceof Array
+          ? dur = timbre.utils.bpm2msec(bpm, x[0][0]) * x[0][1]
+          : dur = timbre.utils.bpm2msec(bpm, x[0]);
         tmr = T("timeout", dur, function(){
-          if (rest.length !== 0) {
-            fn(rest);
+          if (xs.length !== 0) {
+            fn(xs);
           }
         });
         tmr.on();
-        return cur[1].apply(this, cur[2]);
+        return x[1].apply(this, x[2]);
       };
       if (seq.length !== 0) {
         fn(seq);

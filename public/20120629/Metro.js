@@ -35,10 +35,18 @@ Metro = (function(){
   prototype.add = function(k, fn){
     this._funcs[k] = fn;
   };
+  prototype.fnames = function(){
+    var k, v, __ref, __results = [];
+    for (k in __ref = this._funcs) {
+      v = __ref[k];
+      __results.push(k);
+    }
+    return __results;
+  };
   prototype.remove = function(k){
     var _f;
     _f = this.fnames();
-    if (_f.indexOf(k > -1)) {
+    if (__in(k, _f)) {
       delete this._funcs[k];
     }
     return this.fnames();
@@ -66,3 +74,8 @@ Metro = (function(){
   };
   return Metro;
 }());
+function __in(x, arr){
+  var i = 0, l = arr.length >>> 0;
+  while (i < l) if (x === arr[i++]) return true;
+  return false;
+}
