@@ -1,3 +1,6 @@
+var metro = new Metro(110);
+metro.run();
+
 Drum = this.Drum || {};
 
 Drum.bd = function(vol){
@@ -340,7 +343,7 @@ s7 = {
 });
 
 Drum.seqChange(0);
-metro.add('test', function(i){
+metro.add('drum', function(i){
   var cnt = i.count%4;
   if(cnt===0){
     Drum.bd_loop();
@@ -354,3 +357,4 @@ metro.add('test', function(i){
     Drum.seqChange(Math.floor(Math.random()*Seq.length));
   }
 });
+

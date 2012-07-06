@@ -1,88 +1,68 @@
-Metro = this.Metro = function(bpm){
-  var self = this;  
-  
-  self.bpm = bpm || 120;
-  self.msec = timbre.utils.bpm2msec(self.bpm, 4);
-  self._m = false;
-  self._funcs = {'_click_':function(i){
-    var cnt = i.count%4;
-    var vol = 0.5;
-    if(self._m){
-      if(cnt===0){
-        self.click(880,vol);
-      }else{
-        self.click(440,vol);
+var Metro;
+Metro = (function(){
+  Metro.displayName = 'Metro';
+  var prototype = Metro.prototype, constructor = Metro;
+  function Metro(bpm){
+    var interval;
+    this.bpm = bpm || 120;
+    this.msec = timbre.utils.bpm2msec(this.bpm, 4);
+    this._m = false;
+    this._funcs = {
+      '_click_': function(i){
+        var cnt, vol;
+        cnt = i.count % 4;
+        vol = 0.5;
+        if (this._m) {
+          if (cnt === 0) {
+            this.click(880, vol);
+          } else {
+            this.click(440, vol);
+          }
+        }
       }
-    }
-  }};
-
-  self.loopFunc = function(){
-    for(var k in self._funcs){
-      var v = self._funcs[k];
-      if(typeof v === "function"){
-        v.apply(self,[interval]);
+    };
+    this.loopFunc = function(){
+      var k, v, __ref;
+      for (k in __ref = this._funcs) {
+        v = __ref[k];
+        if (typeof v === "function") {
+          v.apply(this, [interval]);
+        }
       }
-    }
-  }.bind(self);
-  
-  var interval = self.interval = T("interval", self.msec, self.loopFunc);
-
-  return self
-};
-
-Metro.prototype.fnames = function(){
-  var self = this;
-  var names = [];
-  for(var k in self._funcs){
-    names.push(k);
+    };
+    interval = this.interval = T("interval", this.msec, this.loopFunc.bind(this));
   }
-  return names
-};
-
-Metro.prototype.add = function(k,fn){
-  var self = this;
-  self._funcs[k] = fn;
-};
-
-Metro.prototype.remove = function(k){
-  var self = this;
-  var _f = self.fnames();
-  if(_f.indexOf(k)>-1){
-    delete self._funcs[k];
-  }
-  return self.fnames()
-}
-
-Metro.prototype.run = function(){
-  var self = this;
-  self.interval.on();
-};
-
-Metro.prototype.stop = function(){
-  var self = this;
-  self.interval.off();
-};
-
-Metro.prototype.click = function(freq,vol){
-  var osc = T("pulse",freq);
-  var env = T("perc",80).set("mul",vol);
-  var s = T("*",osc,env.bang()).play();
-  env.onended = function(){
-    s.pause();
+  prototype.add = function(k, fn){
+    this._funcs[k] = fn;
   };
-};
-
-Metro.prototype.clickOn = function(){
-  var self = this;
-  self._m = true;
-};
-
-Metro.prototype.clickOff = function(){
-  var self = this;
-  self._m = false;
-};
-
-// main
-var metro = new Metro(110);
-metro.run();
-
+  prototype.remove = function(k){
+    var _f;
+    _f = this.fnames();
+    if (_f.indexOf(k > -1)) {
+      delete this._funcs[k];
+    }
+    return this.fnames();
+  };
+  prototype.run = function(){
+    this.interval.on();
+  };
+  prototype.stop = function(){
+    this.interval.off();
+  };
+  prototype.click = function(freq, vol){
+    var osc, env, s;
+    osc = T("pulse", freq);
+    env = T("perc", 80).set("mul", vol);
+    s = T("*", osc, env.bang()).play();
+    s.onendec = function(){
+      s.pause();
+    };
+  };
+  prototype.clickOn = function(){
+    this._m = true;
+  };
+  prototype.clickOff = function(){
+    this._m = false;
+  };
+  return Metro;
+}());
