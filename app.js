@@ -35,7 +35,7 @@
       ? n
       : [n];
     return reject(function(it){
-      return n.indexOf(it) > -1;
+      return __in(it, n);
     }, lst);
   };
   getMeta = function(dir, name){
@@ -66,5 +66,10 @@
     var own = {}.hasOwnProperty;
     for (var key in src) if (own.call(src, key)) obj[key] = src[key];
     return obj;
+  }
+  function __in(x, arr){
+    var i = 0, l = arr.length >>> 0;
+    while (i < l) if (x === arr[i++]) return true;
+    return false;
   }
 }).call(this);
