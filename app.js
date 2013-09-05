@@ -9,16 +9,14 @@
   app.configure(function(){
     app.use(
     express['static'](__dirname + '/public'));
-    app.engine('.haml', require('hamljs').render);
-    app.set('view engine', 'haml');
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'jade');
   });
   app.get('/', function(req, res){
     var files;
     files = listFiles("public", ['js', 'css', 'bootstrap', '.DS_Store']);
     res.render('index', {
-      locals: {
-        files: files
-      }
+      files: files
     });
   });
   listFiles = function(pa, excludes){
@@ -41,7 +39,7 @@
   getMeta = function(dir, name){
     var mtime;
     mtime = fs.statSync(dir + "/" + name).mtime;
-    return listsToObj([['name', name], ['mtime', mtime], ['memo', getREADME(dir + "/" + name).replace(/(\r|\n|\r\n)/g, "<br/>")]]);
+    return pairsToObj([['name', name], ['mtime', mtime], ['memo', getREADME(dir + "/" + name).replace(/(\r|\n|\r\n)/g, "<br/>")]]);
   };
   getREADME = function(pa){
     var t;
