@@ -1,19 +1,19 @@
 global <<< require \prelude-ls
 global <<< require \date-utils
 fs = require \fs
-path = require \path
 express = require \express
 
-app = express.createServer!
+app = express!
 
+## app.engine 'haml' (require 'hamljs').render
 app.configure ! ->
   express.static __dirname + '/public' |> app.use
-app.register '.haml' require 'hamljs/lib/haml.js' # require \hamljs だとエラーでた
-app.set 'view engine' 'haml'
+  app.set 'views', __dirname+'/views'
+  app.set 'view engine' 'jade'
 
-app.get '/' (req,res) ->
+app.get '/' !(req,res) ->
   files = listFiles "public", [\js \css \bootstrap \.DS_Store]
-  res.render 'index' locals: files: files
+  res.render 'index' files: files
 
 ## get files in some directory
 listFiles = (pa,excludes) ->
@@ -28,20 +28,20 @@ omit = (lst,n) ->
 ## get relative-path, file-name, mtime object
 getMeta = (dir,name) ->
   mtime = fs.statSync "#dir/#name" .mtime
-  listToObj [[\name name]
-             [\mtime mtime]
-             [\memo getREADME "#dir/#name" .replace //(\r|\n|\r\n)//g "<br/>"]]
+  pairs-to-obj [[\name name]
+               [\mtime mtime]
+               [\memo getREADME "#dir/#name" .replace //(\r|\n|\r\n)//g "<br/>"]]
 
 ## get README text
 getREADME = (pa) ->
   t = fs.statSync pa
   if t.isDirectory! then
-    if path.existsSync "#pa/README" then fs.readFileSync "#pa/README" "utf-8" else ""
+    if fs.existsSync "#pa/README" then fs.readFileSync "#pa/README" "utf-8" else ""
   else ""
 
 ## server start            
 (process.env.PORT or 12345) |> app.listen
 
 if app.settings.env is 'development'
-  then "applications start: " + JSON.stringify app.address! |> console.log
+  then "applications start" |> console.log
 
