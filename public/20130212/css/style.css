@@ -1,0 +1,14 @@
+#w {
+  position: relative;
+  width: auto;
+  height: 1600px;
+}
+#o {
+  font-size: 10em;
+  position: fixed;
+  text-align: center;
+  top: 50%;
+  margin-top: -100px;
+  width: 100%;
+  height: 200px;
+}
